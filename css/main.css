@@ -19,6 +19,9 @@ body {
 .home-intro{
 text-align:center;
 }
+.home-intro img{
+max-width:600px;
+}
 
 h1 {
     font-size:3rem;

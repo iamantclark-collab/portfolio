@@ -1,0 +1,317 @@
+/* =========================================================
+   LINK PAGE – styles.css
+   Edit the TOKENS block below to restyle everything.
+   Colours, radii, spacing and the bounce all live there.
+   ========================================================= */
+
+/* ---------- 0. FONTS ----------
+   Knile (Black + Light) is self-hosted: put the files in /fonts.
+   Lora Regular loads from Google Fonts in index.html.
+*/
+@font-face {
+  font-family: "Knile";
+  src: url("fonts/Knile-Black.woff2") format("woff2"),
+       url("fonts/Knile-Black.woff") format("woff");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Knile";
+  src: url("fonts/Knile-Light.woff2") format("woff2"),
+       url("fonts/Knile-Light.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ---------- 1. TOKENS (edit these first) ---------- */
+:root {
+  /* Page */
+  --color-bg: #DEE3E7;
+  --color-text: #132B45;
+  --color-text-muted: #244465;
+  --font-title: "Knile", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; /* Knile Black, weight 900 */
+  --font-light: "Knile", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; /* Knile Light, weight 300 */
+  --font-body: "Lora", Georgia, "Times New Roman", serif;                           /* Lora Regular, weight 400 */
+
+  /* Layout */
+  --page-max-width: 720px;
+  --page-padding: 24px;
+  --promo-gap: 24px;
+
+  /* Promo box */
+  --promo-radius: 24px;
+    --promo-radius2: 32px;
+    --promo-border: 4px;
+  --promo-padding: 28px;
+  --promo-min-height: 200px;
+  --promo-shadow: 8px 10px 0 rgba(0, 0, 0, 1);
+  --promo-shadow-hover: 0 18px 40px rgba(0, 0, 0, 0.14);
+
+  /* Promo colours (one set per modifier class) */
+  --promo-a-bg: #f3f4f7;
+    --promo-a-bg2: #132B45;
+    --promo-a-stroke: #132B45;
+  --promo-a-text: #132B45;
+  --promo-b-bg: #01D7C5;
+  --promo-b-text: #3A1772;
+  --promo-c-bg: #ff9fb8;
+  --promo-c-text: #132B45;
+
+  /* Button */
+  --button-bg: #132B45;
+  --button-text: #DEE3E7;
+  --button-radius: 999px;
+  --button-padding: 8px 16px;
+
+  /* Image slot */
+  --media-width: 45%;
+  --media-radius: 20px;
+
+  /* Bounce (hover) */
+  --bounce-duration: 0.55s;
+  --bounce-easing: cubic-bezier(0.34, 1.56, 0.64, 1); /* overshoot = spring */
+  --bounce-lift: -8px;
+  --bounce-scale: 1.025;
+  --bounce-image-rotate: -3deg;
+  --bounce-image-scale: 1.06;
+}
+
+/* ---------- 2. BASE ---------- */
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-weight: 400;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { display: block; max-width: 100%; }
+
+.page {
+  max-width: var(--page-max-width);
+  margin: 0 auto;
+  padding: 32px var(--page-padding) 48px;
+}
+
+/* ---------- 3. INTRO ---------- */
+.intro { margin-bottom: 40px; text-align: center; }
+
+.intro__title {
+  margin: 0;
+  font-family: var(--font-title);
+  font-size: 8rem;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  line-height: 1;
+}
+.home-intro__image{
+  margin:-40px 0 24px 0;
+}
+.home-intro__logo{
+    width: 64px;
+    position: fixed;
+    top: 32px;
+    left:24px
+}
+.intro__text {
+  margin: 0;
+  max-width: 28ch;
+  font-family: var(--font-light);
+  font-size: 2.5rem;
+  font-weight: 300;
+  line-height: 1.2;
+  letter-spacing: -0.04em;
+  color: var(--color-text-muted);
+}
+
+/* ---------- 4. PROMO BOXES ---------- */
+.promos {
+  display: flex;
+  flex-direction: column;
+  gap: var(--promo-gap);
+}
+
+.promo {
+  /* Per-colour variables are set by the modifier classes below */
+  background: var(--promo-a-bg2);
+  --promo-text: var(--promo-a-text);
+  border-radius: var(--promo-radius2);
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  transition:
+    transform var(--bounce-duration) var(--bounce-easing),
+    box-shadow var(--bounce-duration) var(--bounce-easing);
+  will-change: transform;
+    color: var(--color-text);
+    margin:0 0 0 8px;
+    height:200px;
+    text-decoration:none;
+
+}
+.promo__wrapper{
+ --promo-bg: var(--promo-a-bg);
+  --promo-text: var(--promo-a-text);
+  display: flex;
+  align-items: stretch;
+  justify-content: space-between;
+  gap: 24px;
+  min-height: var(--promo-min-height);
+  padding: var(--promo-padding);
+  border-radius: var(--promo-radius);
+  background: var(--promo-bg);
+  border: 4px solid var(--promo-a-stroke);
+        height:200px;
+ margin:-8px 0 0 0;
+ align-items: center;
+  text-decoration:none;
+    width: 100%;
+}
+
+.promo__content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.promo__label {
+  font-family: var(--font-light);
+  font-size: 0.7rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: var(--promo-text);
+  color: var(--promo-bg);
+  padding: 4px 8px;
+  border-radius: 4px;
+}
+
+.promo__title {
+  margin: 0;
+  font-family: var(--font-title);
+  font-size: clamp(1.25rem, 3.6vw, 1.4rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.promo__button {
+  display: inline-block;
+  letter-spacing: -0.4px;
+  padding: var(--button-padding);
+  border-radius: var(--button-radius);
+  background: var(--button-bg);
+  color: var(--button-text);
+  font-family: var(--font-title);
+  font-size: 0.9375rem;
+  font-weight: 900;
+  transition: transform var(--bounce-duration) var(--bounce-easing);
+}
+
+/* Image slot – drop any image in; it fills and crops to the box */
+.promo__media {
+  flex: 0 0 var(--media-width);
+  overflow: hidden;
+}
+
+.promo__image {
+  object-fit: cover;
+  transition: transform var(--bounce-duration) var(--bounce-easing);
+}
+
+/* ---------- 5. HOVER / FOCUS / PRESS ---------- */
+.promo div:hover,
+.promo:focus-visible {
+ margin:0;
+ transition:var(--bounce-easing);
+
+}
+
+.promo:active {
+  transform: translateY(-2px) scale(0.99);
+  transition-duration: 0.12s;
+}
+
+.promo:focus-visible {
+  outline: 3px solid var(--color-text);
+  outline-offset: 4px;
+}
+
+/* ---------- 6. CONNECT ---------- */
+.connect { margin-top: 48px; }
+
+.connect__title {
+  margin: 0 0 12px;
+  font-family: var(--font-title);
+  font-size: 1rem;
+  font-weight: 900;
+}
+
+.connect__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.connect__link {
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-weight: 400;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.connect__link:hover { text-decoration-thickness: 2px; }
+
+.promo--a div{ --promo-bg: var(--promo-a-bg); --promo-text: var(--promo-a-text) !important;  }
+.promo--b div{ --promo-bg: var(--promo-b-bg); --promo-text: var(--promo-b-text) !important; }
+.promo--c div{ --promo-bg: var(--promo-c-bg); --promo-text: var(--promo-c-text) !important; }
+
+@keyframes bounce {
+  0% { transform: scale(1.1); opacity: 1 }
+  50% { transform: scale(1.6); opacity: .7; }
+  60% { transform: scale(0.6); opacity: 1 }
+  80% { transform: scale(0.95) }
+  100% { transform: scale(0.85) }
+}
+/* ---------- 7. RESPONSIVE ---------- */
+@media (max-width: 520px) {
+  :root {
+    --promo-padding: 22px;
+    --media-width: 34%;
+  }
+  .promo { min-height: 190px; gap: 16px; }
+}
+
+/* ---------- 8. REDUCED MOTION ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .promo,
+  .promo__button,
+  .promo__image { transition: none; }
+
+  .promo:hover,
+  .promo:focus-visible,
+  .promo:active { transform: none; }
+
+  .promo:hover .promo__image,
+  .promo:focus-visible .promo__image,
+  .promo:hover .promo__button,
+  .promo:focus-visible .promo__button { transform: none; }
+}

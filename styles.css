@@ -119,7 +119,7 @@ img { display: block; max-width: 100%; }
   margin:-40px 0 24px 0;
 }
 .home-intro__logo{
-    width: 64px;
+    width: 48px;
     position: fixed;
     top: 32px;
     left:24px
@@ -144,8 +144,8 @@ img { display: block; max-width: 100%; }
 
 .promo {
   /* Per-colour variables are set by the modifier classes below */
-  background: var(--promo-a-bg2);
-  --promo-text: var(--promo-a-text);
+  background: var(--promo-text);
+  --promo-text: var(--promo-text);
   border-radius: var(--promo-radius2);
   display: flex;
   align-items: stretch;
@@ -171,7 +171,7 @@ img { display: block; max-width: 100%; }
   padding: var(--promo-padding);
   border-radius: var(--promo-radius);
   background: var(--promo-bg);
-  border: 4px solid var(--promo-a-stroke);
+  border: 4px solid var(--promo-text);
         height:200px;
  margin:-8px 0 0 0;
  align-items: center;
@@ -214,8 +214,8 @@ img { display: block; max-width: 100%; }
   letter-spacing: -0.4px;
   padding: var(--button-padding);
   border-radius: var(--button-radius);
-  background: var(--button-bg);
-  color: var(--button-text);
+  background: var(--promo-text);
+  color: var(--promo-bg);
   font-family: var(--font-title);
   font-size: 0.9375rem;
   font-weight: 900;
@@ -280,9 +280,13 @@ img { display: block; max-width: 100%; }
 
 .connect__link:hover { text-decoration-thickness: 2px; }
 
-.promo--a div{ --promo-bg: var(--promo-a-bg); --promo-text: var(--promo-a-text) !important;  }
-.promo--b div{ --promo-bg: var(--promo-b-bg); --promo-text: var(--promo-b-text) !important; }
-.promo--c div{ --promo-bg: var(--promo-c-bg); --promo-text: var(--promo-c-text) !important; }
+.promo--a div{  --promo-bg: var(--promo-a-bg); --promo-text: var(--promo-a-text) !important;  }
+.promo--b div{  --promo-bg: var(--promo-b-bg); --promo-text: var(--promo-b-text) !important; }
+.promo--c div{  --promo-bg: var(--promo-c-bg); --promo-text: var(--promo-c-text) !important; }
+
+.promo--a { background: var(--promo-a-text) !important;  }
+.promo--b { background: var(--promo-b-text) !important; }
+.promo--c { background: var(--promo-c-text) !important; }
 
 @keyframes bounce {
   0% { transform: scale(1.1); opacity: 1 }

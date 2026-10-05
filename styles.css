@@ -37,15 +37,15 @@
   --font-body: "Lora", Georgia, "Times New Roman", serif;                           /* Lora Regular, weight 400 */
 
   /* Layout */
-  --page-max-width: 720px;
-  --page-padding: 24px;
-  --promo-gap: 24px;
+  --page-max-width: 1232px;
+  --page-padding: 32px;
+  --promo-gap: 16px;
 
   /* Promo box */
   --promo-radius: 24px;
-    --promo-radius2: 32px;
+    --promo-radius2: 24px;
     --promo-border: 4px;
-  --promo-padding: 28px;
+  --promo-padding: 0 0 0 24px;
   --promo-min-height: 200px;
   --promo-shadow: 8px 10px 0 rgba(0, 0, 0, 1);
   --promo-shadow-hover: 0 18px 40px rgba(0, 0, 0, 0.14);
@@ -55,10 +55,12 @@
     --promo-a-bg2: #132B45;
     --promo-a-stroke: #132B45;
   --promo-a-text: #132B45;
-  --promo-b-bg: #01D7C5;
-  --promo-b-text: #3A1772;
-  --promo-c-bg: #ff9fb8;
+  --promo-c-bg: #01D7C5;
   --promo-c-text: #132B45;
+  --promo-b-bg: #F5F87C;
+  --promo-b-text: #132B45;
+    --promo-d-bg: #78CBCA;
+  --promo-d-text: #132B45;
 
   /* Button */
   --button-bg: #132B45;
@@ -67,16 +69,17 @@
   --button-padding: 8px 16px;
 
   /* Image slot */
-  --media-width: 45%;
+  --media-width: 54%;
   --media-radius: 20px;
 
   /* Bounce (hover) */
-  --bounce-duration: 0.55s;
-  --bounce-easing: cubic-bezier(0.34, 1.56, 0.64, 1); /* overshoot = spring */
-  --bounce-lift: -8px;
-  --bounce-scale: 1.025;
-  --bounce-image-rotate: -3deg;
-  --bounce-image-scale: 1.06;
+  --bounce-duration: 0.35s;
+  --bounce-easing: cubic-bezier(0.34, 2.2, 0.5, 1); /* overshoots, then settles = little bounce */
+  --bounce-lift: 0px;
+
+  /* Text link (replaces the button) */
+  --link-gap: 8px;
+  --link-icon-size: 1.25em;
 }
 
 /* ---------- 2. BASE ---------- */
@@ -89,11 +92,27 @@ html { -webkit-text-size-adjust: 100%; }
 body {
   margin: 0;
   background: var(--color-bg);
+    background-size: 90%;
+    background-attachment: fixed;
+
   color: var(--color-text);
   font-family: var(--font-body);
   font-weight: 400;
   line-height: 1.4;
   -webkit-font-smoothing: antialiased;
+}
+.skyline{
+   filter: blur(2px);
+    position: fixed;
+    left: 0;
+    right: 0;
+   
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    z-index: -1;
 }
 
 img { display: block; max-width: 100%; }
@@ -105,7 +124,7 @@ img { display: block; max-width: 100%; }
 }
 
 /* ---------- 3. INTRO ---------- */
-.intro { margin-bottom: 40px; text-align: center; }
+.intro { margin-bottom: 40px; text-align: left; }
 
 .intro__title {
   margin: 0;
@@ -138,7 +157,7 @@ img { display: block; max-width: 100%; }
 /* ---------- 4. PROMO BOXES ---------- */
 .promos {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: var(--promo-gap);
 }
 
@@ -173,10 +192,12 @@ img { display: block; max-width: 100%; }
   background: var(--promo-bg);
   border: 4px solid var(--promo-text);
         height:200px;
- margin:-8px 0 0 0;
+ margin:-6px 0 0 -6px;
  align-items: center;
   text-decoration:none;
     width: 100%;
+    overflow: hidden;
+  transition: margin var(--bounce-duration) var(--bounce-easing);
 }
 
 .promo__content {
@@ -209,23 +230,34 @@ img { display: block; max-width: 100%; }
   line-height: 1.2;
 }
 
-.promo__button {
-  display: inline-block;
-  letter-spacing: -0.4px;
-  padding: var(--button-padding);
-  border-radius: var(--button-radius);
-  background: var(--promo-text);
-  color: var(--promo-bg);
+/* Text link with a Google Material "arrow_forward" icon.
+   The arrow is drawn with a mask so it matches the text colour.
+   To swap the icon, replace the path inside the url(...) below. */
+.promo__link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--link-gap);
+  color: var(--promo-text);
   font-family: var(--font-title);
   font-size: 0.9375rem;
   font-weight: 900;
-  transition: transform var(--bounce-duration) var(--bounce-easing);
+  letter-spacing: -0.4px;
+}
+
+.promo__link::after {
+  content: "";
+  width: var(--link-icon-size);
+  height: var(--link-icon-size);
+  background-color: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 -960 960 960'%3E%3Cpath d='M647-440H160v-80h487L423-744l57-56 320 320-320 320-57-56 224-224Z'/%3E%3C/svg%3E") center / contain no-repeat;
+          mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 -960 960 960'%3E%3Cpath d='M647-440H160v-80h487L423-744l57-56 320 320-320 320-57-56 224-224Z'/%3E%3C/svg%3E") center / contain no-repeat;
 }
 
 /* Image slot – drop any image in; it fills and crops to the box */
 .promo__media {
   flex: 0 0 var(--media-width);
   overflow: hidden;
+    margin-bottom:16px;
 }
 
 .promo__image {
@@ -234,10 +266,9 @@ img { display: block; max-width: 100%; }
 }
 
 /* ---------- 5. HOVER / FOCUS / PRESS ---------- */
-.promo div:hover,
-.promo:focus-visible {
+.promo div:hover {
  margin:0;
- transition:var(--bounce-easing);
+  transform: translateY(var(--bounce-lift));
 
 }
 
@@ -283,31 +314,111 @@ img { display: block; max-width: 100%; }
 .promo--a div{  --promo-bg: var(--promo-a-bg); --promo-text: var(--promo-a-text) !important;  }
 .promo--b div{  --promo-bg: var(--promo-b-bg); --promo-text: var(--promo-b-text) !important; }
 .promo--c div{  --promo-bg: var(--promo-c-bg); --promo-text: var(--promo-c-text) !important; }
+.promo--d div{  --promo-bg: var(--promo-d-bg); --promo-text: var(--promo-d-text) !important; }
 
 .promo--a { background: var(--promo-a-text) !important;  }
 .promo--b { background: var(--promo-b-text) !important; }
 .promo--c { background: var(--promo-c-text) !important; }
+.promo--d { background: var(--promo-c-text) !important; }
+
+
+
+
+
+ :root {
+    --promo-padding: 16px 16px 0; /* no bottom padding so the image sits flush with the bottom edge */
+  }
+
+  /* Outer box (holds the shadow): drop the fixed height */
+  .promo {
+    height: auto;
+    min-height: 0;
+    width:100%;
+  }
+
+  /* Inner box: stack the content, let the height follow the content.
+     margin-bottom 6px offsets the -6px top margin so the outer box keeps
+     its full height and the shadow strip still shows at the bottom. */
+  .promo__wrapper {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    height: auto;
+    min-height: 0;
+    margin-bottom: 6px;
+  }
+
+  .promo__content {
+    flex: none;
+  }
+
+  /* Image goes under the text at full width */
+  .promo__media {
+    flex: none;
+    width: 100%;
+  }
+
+  .promo__image {
+    width: 100%;
+    height: auto;
+  }
+
+
+
+
+
+
 
 @keyframes bounce {
-  0% { transform: scale(1.1); opacity: 1 }
-  50% { transform: scale(1.6); opacity: .7; }
-  60% { transform: scale(0.6); opacity: 1 }
-  80% { transform: scale(0.95) }
-  100% { transform: scale(0.85) }
+  100% { transform: scale(1) }
 }
 /* ---------- 7. RESPONSIVE ---------- */
-@media (max-width: 520px) {
+/* 768px and below: text first, image underneath, box height fits its content */
+@media (max-width: 1024px) {
   :root {
-    --promo-padding: 22px;
-    --media-width: 34%;
+    --promo-padding: 16px 16px 0; /* no bottom padding so the image sits flush with the bottom edge */
   }
-  .promo { min-height: 190px; gap: 16px; }
+    .promos {
+    flex-direction: column;
+  }
+
+  /* Outer box (holds the shadow): drop the fixed height */
+  .promo {
+    height: auto;
+    min-height: 0;
+  }
+
+  /* Inner box: stack the content, let the height follow the content.
+     margin-bottom 6px offsets the -6px top margin so the outer box keeps
+     its full height and the shadow strip still shows at the bottom. */
+  .promo__wrapper {
+    flex-direction: column;
+    align-items: stretch;
+    height: auto;
+    min-height: 0;
+    margin-bottom: 6px;
+  }
+
+  .promo__content {
+    flex: none;
+  }
+
+  /* Image goes under the text at full width */
+  .promo__media {
+    flex: none;
+    width: 100%;
+  }
+
+  .promo__image {
+    width: 100%;
+    height: auto;
+  }
 }
 
 /* ---------- 8. REDUCED MOTION ---------- */
 @media (prefers-reduced-motion: reduce) {
   .promo,
-  .promo__button,
+  .promo__wrapper,
   .promo__image { transition: none; }
 
   .promo:hover,
@@ -315,7 +426,5 @@ img { display: block; max-width: 100%; }
   .promo:active { transform: none; }
 
   .promo:hover .promo__image,
-  .promo:focus-visible .promo__image,
-  .promo:hover .promo__button,
-  .promo:focus-visible .promo__button { transform: none; }
+  .promo:focus-visible .promo__image { transform: none; }
 }

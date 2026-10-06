@@ -16,7 +16,14 @@
   font-style: normal;
   font-display: swap;
 }
-
+@font-face {
+  font-family: "Knile";
+  src: url("fonts/Knile-Medium.woff2") format("woff2"),
+       url("fonts/Knile-Medium.woff") format("woff");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
 @font-face {
   font-family: "Knile";
   src: url("fonts/Knile-Light.woff2") format("woff2"),
@@ -104,15 +111,28 @@ body {
 .skyline{
    filter: blur(2px);
     position: fixed;
-    left: 0;
-    right: 0;
-   
-    bottom: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+     left: 50%;
+  transform: translateX(-50%);
     width: 100%;
     z-index: -1;
+    max-width: 1600px;
+}
+.lampost{
+filter: blur(12px);
+    position: fixed;
+    right: -500px;
+    bottom: -140px;
+    z-index: 1;
+    max-width: 860px;
+}
+.lampost2{
+filter: blur(12px);
+    position: fixed;
+    left: -240px;
+    bottom: -140px;
+    z-index: 1;
+    max-width: 610px;
+
 }
 
 img { display: block; max-width: 100%; }
@@ -134,6 +154,7 @@ img { display: block; max-width: 100%; }
   letter-spacing: -0.04em;
   line-height: 1;
 }
+
 .home-intro__image{
   margin:-40px 0 24px 0;
 }
@@ -145,7 +166,7 @@ img { display: block; max-width: 100%; }
 }
 .intro__text {
   margin: 0;
-  max-width: 28ch;
+  max-width: 48ch;
   font-family: var(--font-light);
   font-size: 2.5rem;
   font-weight: 300;
@@ -212,7 +233,7 @@ img { display: block; max-width: 100%; }
 .promo__label {
   font-family: var(--font-light);
   font-size: 0.7rem;
-  font-weight: 400;
+  font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   background: var(--promo-text);
@@ -266,7 +287,7 @@ img { display: block; max-width: 100%; }
 }
 
 /* ---------- 5. HOVER / FOCUS / PRESS ---------- */
-.promo div:hover {
+.promo div.promo__wrapper:hover {
  margin:0;
   transform: translateY(var(--bounce-lift));
 
@@ -283,7 +304,13 @@ img { display: block; max-width: 100%; }
 }
 
 /* ---------- 6. CONNECT ---------- */
-.connect { margin-top: 48px; }
+.connect {     margin: 40px 0;
+    text-align: center;
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
 
 .connect__title {
   margin: 0 0 12px;
@@ -364,10 +391,31 @@ img { display: block; max-width: 100%; }
   }
 
 
+  @media (max-width: 1600px) {
+.lampost{
+ filter: blur(12px);
+    position: fixed;
+    right: -360px;
+    bottom: -190px;
+    z-index: 1;
+    max-width: 640px;
+}
+.lampost2{
+filter: blur(12px);
+    position: fixed;
+    left: -250px;
+    bottom: -130px;
+    z-index: 1;
+    max-width: 500px;
 
+}
 
-
-
+   
+    
+  }
+  @media (max-width: 1280px) {
+.lampost, .lampost2{ display:none;}
+  }
 
 @keyframes bounce {
   100% { transform: scale(1) }
@@ -413,6 +461,12 @@ img { display: block; max-width: 100%; }
     width: 100%;
     height: auto;
   }
+  .intro__title {
+  font-size: 4rem;
+}
+.intro__text {
+  font-size: 1.5rem;
+}
 }
 
 /* ---------- 8. REDUCED MOTION ---------- */

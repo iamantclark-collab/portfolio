@@ -20,7 +20,7 @@
 }
 
 :root {
-    --bg: #F4F4F4;
+    --bg: #ffffff;
     --text: #596F7D;
     --muted: #666;
     --line: #e5e5e5;
@@ -118,7 +118,7 @@ h6 {
     height: auto;
 } 
 .hero h1 {
-    font-size: clamp(2.5rem, 7vw, 5rem);
+    font-size: clamp(2.5rem, 7vw, 6rem);
     line-height: 0.9;
     max-width: 850px;
     margin: 0.15em 0;
@@ -156,7 +156,7 @@ margin-top:0;
 
 .product-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 28px;
 }
 
@@ -164,6 +164,7 @@ margin-top:0;
     background: #fff;
         border-radius: 24px;
     overflow: hidden;
+    border: 1px solid var(--line);
 }
 
 .card img {
@@ -188,9 +189,10 @@ margin-top:0;
     overflow: hidden;
     min-height: 2.5em;
 }
-.card p{
+.card p, p.price{
     font-size:1.5rem;
     margin:0;
+    padding:0;
 
 }
 .card p.eyebrow{
@@ -224,8 +226,8 @@ margin-top:0;
     cursor: not-allowed;
 }
 .container#about{
-background: var(--text);
-color: var(--accent);
+background: #FAFAFA;
+color: var(--text);
 max-width: stretch;
 display: flex;
     justify-content: center;
@@ -246,16 +248,22 @@ display: flex;
     gap: 60px;
     align-items: start;
 }
+.product-detail h1{
+      margin: 0.15em 0;
+
+}
+.product-detail p.description{
+    font-size: 1.25rem;
+} 
+
 
 .product-detail img {
     width: 100%;
     background: #eee;
+    border-radius: 24px;
 }
 
-.price {
-    font-size: 1.5rem;
-    font-weight: 700;
-}
+
 
 .cart-list {
     border-top: 1px solid var(--line);
@@ -307,6 +315,7 @@ footer {
     padding: 28px 0;
     color: var(--muted);
     font-size: 0.9rem;
+    background: #FAFAFA;
 }
 
 code {

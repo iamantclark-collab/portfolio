@@ -226,7 +226,8 @@ margin-top:0;
     cursor: not-allowed;
 }
 .container#about{
-background: #FAFAFA;
+background: var(--text) url(../images/bg.svg) center repeat;
+background-size: 5%;
 color: var(--text);
 max-width: stretch;
 display: flex;
@@ -238,7 +239,10 @@ display: flex;
 
 
 #about div{
-    max-width: var(--max);
+  max-width: var(--max);
+    background: var(--accent);
+    border-radius: 24px;
+    padding: 40px;
 
 }
 

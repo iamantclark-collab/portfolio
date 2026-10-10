@@ -17,6 +17,8 @@ function renderCart(){const el=document.getElementById("cart");if(!el)return;let
 function setQty(id,q){let p=productById(id),c=getCart(),i=c.find(x=>x.id===id);q=Math.max(1,Math.min(Number(q)||1,p.stock));if(i)i.qty=q;saveCart(c);renderCart();}
 function removeItem(id){saveCart(getCart().filter(x=>x.id!==id));renderCart();}
 function checkoutNotice(){alert("Your bag is working. Connect a proper multi-item checkout before taking live orders.");}
-updateCartCount();renderProducts(PRODUCTS);
-const cat=new URLSearchParams(location.search).get("category");if(document.getElementById("category-title")){const items=PRODUCTS.filter(p=>p.category===cat);document.getElementById("category-title").textContent=items[0]?.categoryLabel||"Products";renderProducts(items);}
+updateCartCount();
+const cat=new URLSearchParams(location.search).get("category");
+if(document.getElementById("category-title")){const items=PRODUCTS.filter(p=>p.category===cat);document.getElementById("category-title").textContent=items[0]?.categoryLabel||"Products";renderProducts(items);}
+else renderProducts(PRODUCTS.filter(p=>p.featured)); /* homepage: only products flagged featured:true in data/products.js */
 renderDetail();renderCart();

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Illustration portfolio</title>
+  <link rel="stylesheet" href="diverse.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;600&display=swap" rel="stylesheet">
+
+</head>
+<body>
+
+<header class="site-header"><div class="container nav">
+  <a class="brand" href="index.html"><img class="logo" src="images/logo.svg" alt="DiversePixels"></a>
+  <nav><a class="button"  href="index.html">Shop</a></nav></div>
+<div class="container">
+ <h1>Illustration made to make you smile.</h1>
+
+  <div class="switch" role="group" aria-label="Layout">
+    <button type="button" data-layout="offgrid" aria-pressed="true">Off-grid</button>
+    <button type="button" data-layout="mosaic" aria-pressed="false">Mosaic</button>
+  </div>
+      </div>
+</header>
+
+<main class="grid" id="grid" data-layout="offgrid"></main>
+
+<script>
+/* =========================================================
+   ADD YOUR WORK HERE
+   One object per piece. The order here is the order on the page.
+
+   title : text shown under the image
+   link  : where the image goes when clicked
+   src   : the main image
+   hover : the second version, shown on hover
+   ratio : optional, the image shape as "width / height"
+           (e.g. "1 / 1", "4 / 5", "16 / 9"). Default is "4 / 5".
+           Both layouts keep every image at its own ratio.
+
+   Use your own files, e.g. src: "images/forest.jpg"
+   The placeholders below (ph) can be deleted.
+   ========================================================= */
+const works = [
+  { title: "Work one",   link: "#", src: "images/grid/eazy.jpg", hover: ph("#f2c6b4", "1b"), ratio: "4 / 5" },
+  { title: "Work two",   link: "#", src: "images/grid/polar.jpg", hover: ph("#b9e0c9", "2b"), ratio: "1 / 1" },
+  { title: "Work three", link: "#", src: "images/grid/baggio.jpg", hover: ph("#9fb8e0", "3b"), ratio: "3 / 4" },
+  { title: "Work four",  link: "#", src: "images/grid/champ19ns.jpg", hover: ph("#e6b0c4", "4b"), ratio: "4 / 2.8" },
+  { title: "Work five",  link: "#", src: "images/products/iron1.jpg", hover: ph("#c3c9ef", "5b"), ratio: "4 / 4" },
+  { title: "Work six",   link: "#", src: "images/grid/bobby.jpg", hover: ph("#f0b9a0", "6b"), ratio: "4 / 2.8" },
+  { title: "Work seven", link: "#", src: "images/products/dredd1.jpg", hover: ph("#dcd09a", "7b"), ratio: "3 / 4" },
+  { title: "Work eight", link: "#", src: "images/grid/diego.jpg", hover: ph("#a6d3cc", "8b"), ratio: "4 / 2.8" }
+];
+
+/* ---------- Rendering (no need to edit below) ---------- */
+const grid = document.getElementById("grid");
+
+function esc(s) {
+  return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+grid.innerHTML = works.map(w => `
+  <article class="work">
+    <a href="${esc(w.link)}">
+      <div class="frame" style="--ratio:${esc(w.ratio || "4 / 5")}">
+        <img src="${esc(w.src)}" alt="${esc(w.title)}" loading="lazy">
+        <img class="alt" src="${esc(w.hover)}" alt="" loading="lazy">
+      </div>
+      <h2>${esc(w.title)}</h2>
+    </a>
+  </article>
+`).join("");
+
+/* ---------- Layout switch ---------- */
+const buttons = document.querySelectorAll(".switch button");
+
+function setLayout(layout) {
+  grid.dataset.layout = layout;
+  buttons.forEach(b => b.setAttribute("aria-pressed", String(b.dataset.layout === layout)));
+  try { localStorage.setItem("portfolio-layout", layout); } catch (e) {}
+}
+
+buttons.forEach(b => b.addEventListener("click", () => setLayout(b.dataset.layout)));
+
+// Remember the visitor's last choice
+try {
+  const saved = localStorage.getItem("portfolio-layout");
+  if (saved === "offgrid" || saved === "mosaic") setLayout(saved);
+} catch (e) {}
+
+/* Placeholder image generator, used only for the sample entries */
+function ph(color, label) {
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500"><rect width="400" height="500" fill="${color}"/><text x="200" y="260" font-family="sans-serif" font-size="64" text-anchor="middle" fill="rgba(0,0,0,.35)">${label}</text></svg>`;
+  return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
+}
+</script>
+</body>
+</html>

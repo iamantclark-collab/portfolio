@@ -23,7 +23,7 @@
     --bg: #ffffff;
     --text: #596F7D;
     --muted: #666;
-    --line: #e5e5e5;
+    --line: #F7F7F7;
     --accent: #F5F76B;
     --max: 1440px;
 
@@ -43,7 +43,7 @@ body {
     color: var(--text);
     background: var(--bg);
     line-height: 1.6;
-    background:var(--bg) url(../images/watermark.svg) bottom center no-repeat;
+    background:var(--bg);
     background-size: 120%;
 }
 
@@ -131,13 +131,13 @@ h6 {
 .eyebrow {
     text-transform: uppercase;
     letter-spacing: 0.12em;
-    font-size: 0.75rem;
-    font-weight: 700;
+    font-size: 0.85rem;
+    font-weight: 400;
     color: var(--muted);
 }
 
 .section {
-    padding: 72px 24px;
+    padding: 40px 24px 56px 24px;
 }
 .section h1{
         font-size: clamp(2.5rem, 7vw, 5rem);
@@ -161,10 +161,9 @@ margin-top:0;
 }
 
 .card {
-    background: #fff;
+    background: var(--line);
         border-radius: 24px;
     overflow: hidden;
-    border: 1px solid var(--line);
 }
 
 .card img {
@@ -196,7 +195,7 @@ margin-top:0;
 
 }
 .card p.eyebrow{
-    font-size:1rem;
+    font-size:.75rem;
 
 }
 .card p.stock {
@@ -226,7 +225,7 @@ margin-top:0;
     cursor: not-allowed;
 }
 .container#about{
-background: var(--text) url(../images/bg.svg) center repeat;
+background: var(--line);
 background-size: 5%;
 color: var(--text);
 max-width: stretch;
@@ -240,7 +239,7 @@ display: flex;
 
 #about div{
   max-width: var(--max);
-    background: var(--accent);
+    background: var(--line);
     border-radius: 24px;
     padding: 40px;
 

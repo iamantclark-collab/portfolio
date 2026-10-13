@@ -192,7 +192,7 @@ header h1 {
 
 
 /* ---------- WORK ---------- */
-.work a { display: block; color: inherit; text-decoration: none; }
+.work a { display: block; color: inherit; text-decoration: none;  }
 
 .frame {
     position: relative;
@@ -219,7 +219,7 @@ header h1 {
 .work h2 {
     margin: 12px 0 0;
     font-size: 1rem;
-    font-weight: 400;
+    font-weight: 800;
 }
 .work a:hover h2 { text-decoration: underline; text-underline-offset: 3px; }
 .work a:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }

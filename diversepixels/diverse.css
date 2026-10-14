@@ -61,6 +61,14 @@ header { font-family: var(--font-body);}
     top: 0;
         padding: clamp(32px, 6vw, 40px) var(--pad) calc(var(--pad) * 1.5);
 }
+ .site-footer {
+    padding-bottom:0;
+    text-align:center;
+ }
+.site-footer img{
+    width:400px;
+    margin-bottom: -24px;
+}
 .brand {
     width: 150px;
 }
@@ -311,5 +319,9 @@ header h1 {
     width: 100%;
     margin:32px 0 64px 0;
 
+}
+.site-footer img{
+    width:200px;
+    margin-bottom: -24px;
 }
 }

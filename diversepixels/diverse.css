@@ -25,7 +25,7 @@
     --muted: #6b7078;
     --gap: clamp(12px, 2vw, 28px);
     --tile-gap: clamp(20px, 1vw, 32px);   /* gap between tiles in the mosaic view */
-    --pad: clamp(16px, 4vw, 16px);
+   --pad: clamp(16px, 4vw, 64px);
     --max: 1440px;
 
     /* Fonts */
@@ -36,7 +36,7 @@
 * { box-sizing: border-box; }
 html { -webkit-text-size-adjust: 100%; }
 body {
-    margin: 0 40px;
+    margin: 0;
     background: var(--bg);
     color: var(--ink);
     font-family: var(--font-body);

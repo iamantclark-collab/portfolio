@@ -120,15 +120,15 @@ body {
 .lampost{
 filter: blur(12px);
     position: fixed;
-    right: -500px;
-    bottom: -140px;
+    right: -600px;
+    bottom: -200px;
     z-index: 1;
     max-width: 860px;
 }
 .lampost2{
 filter: blur(12px);
     position: fixed;
-    left: -240px;
+    left: -350px;
     bottom: -140px;
     z-index: 1;
     max-width: 610px;
@@ -144,15 +144,15 @@ img { display: block; max-width: 100%; }
 }
 
 /* ---------- 3. INTRO ---------- */
-.intro { margin-bottom: 40px; text-align: left; }
+.intro { margin-bottom: 48px; text-align: left; }
 
 .intro__title {
   margin: 0;
   font-family: var(--font-title);
-  font-size: 8rem;
+  font-size: clamp(1.5rem, 6vw, 3rem);
   font-weight: 900;
   letter-spacing: -0.04em;
-  line-height: 1;
+  line-height: 1.2;
 }
 
 .home-intro__image{
@@ -161,8 +161,8 @@ img { display: block; max-width: 100%; }
 .home-intro__logo{
     width: 48px;
     position: fixed;
-    top: 32px;
-    left:24px
+    top: 16px;
+    left:16px
 }
 .intro__text {
   margin: 0;
@@ -227,7 +227,7 @@ img { display: block; max-width: 100%; }
   flex-direction: column;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 12px;
+  gap: 24px;
 }
 
 .promo__label {
@@ -245,7 +245,7 @@ img { display: block; max-width: 100%; }
 .promo__title {
   margin: 0;
   font-family: var(--font-title);
-  font-size: clamp(1.25rem, 3.6vw, 1.4rem);
+  font-size: clamp(1rem, 3.6vw, 1.4rem);
   font-weight: 900;
   letter-spacing: -0.02em;
   line-height: 1.2;
@@ -279,6 +279,10 @@ img { display: block; max-width: 100%; }
   flex: 0 0 var(--media-width);
   overflow: hidden;
     margin-bottom:16px;
+
+    display: flex;
+
+    justify-content: center;
 }
 
 .promo__image {
@@ -369,7 +373,7 @@ img { display: block; max-width: 100%; }
   .promo__wrapper {
     flex-direction: column;
     align-items: stretch;
-    gap: 12px;
+    gap: 24px;
     height: auto;
     min-height: 0;
     margin-bottom: 6px;
@@ -391,7 +395,7 @@ img { display: block; max-width: 100%; }
   }
 
 
-  @media (max-width: 1600px) {
+  @media (max-width: 1599px) {
 .lampost{
  filter: blur(12px);
     position: fixed;
@@ -413,27 +417,77 @@ filter: blur(12px);
    
     
   }
-  @media (max-width: 1280px) {
+  @media (max-width: 1440px) {
 .lampost, .lampost2{ display:none;}
-  }
 
+.promo__wrapper{
+  gap: 16px;
+}
+
+.promo__content {
+  gap: 16px;
+}
+
+    }
 @keyframes bounce {
   100% { transform: scale(1) }
 }
 /* ---------- 7. RESPONSIVE ---------- */
 /* 768px and below: text first, image underneath, box height fits its content */
-@media (max-width: 1024px) {
+
+@media (max-width: 1360px) {
   :root {
     --promo-padding: 16px 16px 0; /* no bottom padding so the image sits flush with the bottom edge */
   }
-    .promos {
-    flex-direction: column;
+  .page {
+margin-left:80px;
+margin-right:80px;
+}
+.intro__title {
+  font-size: 2rem;
+}
+.promo__title {
+ font-size: 1.3rem;
+}
+}
+@media (max-width: 1024px) {
+  .skyline{
+display: none;
+}
+.promos {
+  gap: 24px;
+}
+  .promo__title {
+  font-size: clamp(1rem, 3.6vw, 1.4rem);
+}
+.intro__title {
+  font-size: clamp(1.5rem, 6vw, 3rem);
+}
+  .page {
+  max-width: var(--page-max-width);
+  margin: 0 auto;
+  padding: 32px var(--page-padding) 48px;
+}
+
+  .home-intro__logo{
+   position: relative;
+        top: 0;
+        left: 0;
+      margin: 0 0 24px -6px;
+  }
+  /* 1024px to 769px: two promos per row.
+     Each promo has an 8px left margin, so: 2 x (50% - 20px + 8px) + 24px gap = 100% */
+  .promos {
+    flex-direction: row;
+    flex-wrap: wrap;
   }
 
   /* Outer box (holds the shadow): drop the fixed height */
   .promo {
     height: auto;
     min-height: 0;
+    flex: 0 0 calc(50% - 20px);
+    width: calc(50% - 20px);
   }
 
   /* Inner box: stack the content, let the height follow the content.
@@ -458,15 +512,36 @@ filter: blur(12px);
   }
 
   .promo__image {
-    width: 100%;
+    width: 90%;
     height: auto;
   }
-  .intro__title {
-  font-size: 4rem;
+
+
 }
-.intro__text {
-  font-size: 1.5rem;
+
+/* 768px and below: promos stack, one per row */
+@media (max-width: 768px) {
+  .promos {
+    flex-direction: column;
+    flex-wrap: nowrap;
+  }
+
+  .promo {
+    flex: none;
+    width: 100%;
+  }
 }
+
+/* 1280px and above: centre the page content vertically in the browser.
+   If the content is taller than the window it simply grows and scrolls as normal. */
+@media (min-width: 1280px) {
+  .page {
+    min-height: 100vh;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
 }
 
 /* ---------- 8. REDUCED MOTION ---------- */

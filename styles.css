@@ -311,7 +311,7 @@ img { display: block; max-width: 100%; }
 .connect {     margin: 40px 0;
     text-align: center;
     display: flex;
-    gap: 24px;
+    gap: 8px;
     flex-wrap: wrap;
     justify-content: center;
 }
@@ -326,7 +326,7 @@ img { display: block; max-width: 100%; }
 .connect__list {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px 24px;
+  gap: 6px 12px;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -458,7 +458,7 @@ display: none;
   gap: 24px;
 }
   .promo__title {
-  font-size: clamp(1rem, 3.6vw, 1.4rem);
+  font-size: clamp(1.3rem, 3.6vw, 1.4rem);
 }
 .intro__title {
   font-size: clamp(1.5rem, 6vw, 3rem);

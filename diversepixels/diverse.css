@@ -20,8 +20,8 @@
 }
 
 :root {
-    --bg: #F5F87C;
-    --ink: #596F7D;
+    --bg: #596F7D;
+    --ink: #F5F87C;
     --muted: #6b7078;
     --gap: clamp(12px, 2vw, 28px);
     --tile-gap: clamp(20px, 1vw, 32px);   /* gap between tiles in the mosaic view */
@@ -92,7 +92,7 @@ h6 {
     letter-spacing: -0.04em;
 }
 header h1 {
-    font-size: clamp(4rem, 6vw, 8rem);
+    font-size: clamp(3rem, 6vw, 8rem);
     line-height: 1;
     width:85%;
     margin:64px 0;

@@ -20,7 +20,7 @@
 }
 
 :root {
-    --bg: #596F7D;
+    --bg: #ca0101;
     --ink: #F5F87C;
     --muted: #6b7078;
     --gap: clamp(12px, 2vw, 28px);

@@ -8,6 +8,13 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  /* Pieces with no link yet: a plain div, not clickable, but keeps the hover swap */
+  .work .no-link { display: block; cursor: default; }
+  @media (hover: hover) {
+    .work .no-link:hover .alt { opacity: 1; }
+  }
+</style>
 
 </head>
 <body>
@@ -43,7 +50,10 @@
    One object per piece. The order here is the order on the page.
 
    title : text shown under the image
-   link  : where the image goes when clicked
+   link  : where the image goes when clicked.
+           Use "#" (or leave empty) for no link yet: the piece
+           is not clickable and the hover effect still works.
+           Add a real URL later and it becomes a link.
    src   : the main image
    hover : the second version, shown on hover
    ratio : optional, the image shape as "width / height"
@@ -94,17 +104,23 @@ function esc(s) {
   return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
 }
 
-grid.innerHTML = works.map(w => `
-  <article class="work">
-    <a href="${esc(w.link)}">
+// A link is only real if it's not empty or "#"
+function hasLink(l) {
+  return typeof l === "string" && l.trim() !== "" && l.trim() !== "#";
+}
+
+grid.innerHTML = works.map(w => {
+  const inner = `
       <div class="frame" style="--ratio:${esc(w.ratio || "4 / 5")}">
-        <img src="${esc(w.src)}" alt="${esc(w.title)}" loading="lazy">
-        <img class="alt" src="${esc(w.hover)}" alt="" loading="lazy">
+        <img src="${esc(w.src)}" alt="${esc(w.title)}" loading="lazy" draggable="false">
+        <img class="alt" src="${esc(w.hover)}" alt="" loading="lazy" draggable="false">
       </div>
-      <h2>${esc(w.title)}</h2>
-    </a>
-  </article>
-`).join("");
+      <h2>${esc(w.title)}</h2>`;
+
+  return hasLink(w.link)
+    ? `<article class="work"><a href="${esc(w.link)}">${inner}</a></article>`
+    : `<article class="work"><div class="no-link">${inner}</div></article>`;
+}).join("");
 
 /* ---------- Layout switch ---------- */
 const buttons = document.querySelectorAll(".switch button");

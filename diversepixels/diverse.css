@@ -264,7 +264,7 @@ header h1 {
     position: relative;
     overflow: hidden;
     aspect-ratio: var(--ratio, 4 / 5);
-    background: #d9dce0;
+    background: #3d505c;
 }
 .frame img {
     position: absolute;

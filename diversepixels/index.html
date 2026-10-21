@@ -17,6 +17,36 @@
   @media (hover: hover) {
     .work .no-link:hover .alt { opacity: 1; }
   }
+
+  /* Back to top button: fixed bottom right, fades in after scrolling */
+  .to-top {
+    position: fixed;
+    right: clamp(16px, 3vw, 32px);
+    bottom: calc(clamp(16px, 3vw, 32px) + env(safe-area-inset-bottom, 0px));
+    width: 56px;
+    height: 56px;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--ink);
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--bg);
+    cursor: pointer;
+    z-index: 100;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px);
+    transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s, background 0.2s ease, color 0.2s ease;
+  }
+  .to-top.visible { opacity: 1; visibility: visible; transform: none; }
+  .to-top:hover { background: var(--bg); color: var(--ink); }
+  .to-top:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+  .to-top svg { width: 28px; height: 28px; fill: currentColor; }
+  @media (prefers-reduced-motion: reduce) {
+    .to-top { transition: none; }
+  }
 </style>
 
 </head>
@@ -46,6 +76,10 @@
   </div>
     <img src="images/pencil.svg" alt="">
 </footer>
+
+<button type="button" class="to-top" id="toTop" aria-label="Back to top">
+  <svg viewBox="0 -960 960 960" aria-hidden="true"><path d="M440-160v-487L216-423l-56-57 320-320 320 320-56 57-224-224v487h-80Z"/></svg>
+</button>
 
 <script>
 /* =========================================================
@@ -124,6 +158,21 @@ grid.innerHTML = works.map(w => {
     ? `<article class="work"><a href="${esc(w.link)}">${inner}</a></article>`
     : `<article class="work"><div class="no-link">${inner}</div></article>`;
 }).join("");
+
+/* ---------- Back to top button ---------- */
+const toTop = document.getElementById("toTop");
+
+function updateToTop() {
+  toTop.classList.toggle("visible", window.scrollY > 400);
+}
+
+window.addEventListener("scroll", updateToTop, { passive: true });
+updateToTop();
+
+toTop.addEventListener("click", () => {
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+});
 
 /* ---------- Layout switch ---------- */
 const buttons = document.querySelectorAll(".switch button");

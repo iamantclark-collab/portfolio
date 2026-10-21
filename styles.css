@@ -236,7 +236,7 @@ img { display: block; max-width: 100%; }
      font-family: var(--font-light) and font-weight: 600. */
   font-family: var(--font-title);
   font-size: 0.7rem;
-  font-weight: 900;
+  font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   background: var(--promo-text);

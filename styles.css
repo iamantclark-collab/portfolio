@@ -234,7 +234,7 @@ img { display: block; max-width: 100%; }
   /* Uses Knile Black (900), which is known to load. To use Knile Medium instead,
      upload fonts/Knile-Medium.woff2 (exact filename and case), then set
      font-family: var(--font-light) and font-weight: 600. */
-  font-family: var(--font-title);
+  font-family: var(--font-light);
   font-size: 0.7rem;
   font-weight: 600;
   letter-spacing: 0.08em;

@@ -47,6 +47,20 @@
   @media (prefers-reduced-motion: reduce) {
     .to-top { transition: none; }
   }
+
+  /* Animated pieces: a live SVG layer sits on top of the static poster image,
+     and the hover image sits on top of both, so the hover swap works as before */
+  .frame[data-animated] { position: relative; overflow: hidden; }
+  .frame[data-animated] .anim {
+    position: absolute; inset: 0; z-index: 1;
+    opacity: 0; transition: opacity 0.5s ease; pointer-events: none;
+  }
+  .frame[data-animated] .anim.ready { opacity: 1; }
+  .frame[data-animated] .anim svg { display: block; width: 100%; height: 100%; }
+  .frame[data-animated] .alt { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 2; }
+  @media (prefers-reduced-motion: reduce) {
+    .frame[data-animated] .anim { display: none; }
+  }
 </style>
 
 </head>
@@ -93,6 +107,10 @@
            Add a real URL later and it becomes a link.
    src   : the main image
    hover : the second version, shown on hover
+   animated : optional, an animated SVG (e.g. "images/animated/eazy.svg").
+           It plays on top of src, which stays as the still poster
+           (shown while it loads, and for visitors who prefer reduced motion).
+           The hover image still swaps in over the top.
    ratio : optional, the image shape as "width / height"
            (e.g. "1 / 1", "4 / 5", "16 / 9"). Default is "4 / 5".
            Both layouts keep every image at its own ratio.
@@ -102,14 +120,14 @@
    ========================================================= */
 const works = [
     { title: "Judge Dredd",  link: "#", src: "images/grid/dredd.jpg", hover: "images/grid/dredd2.jpg", ratio: "4 / 6" },
-    { title: "Ruthless Villain",   link: "#", src: "images/grid/mcren.jpg", hover: "images/grid/mcren2.jpg", ratio: "4 / 6" },
+    { title: "Ruthless Villain",   link: "#", src: "images/grid/eazy.jpg", animated: "images/animated/eazy.svg", hover: "images/grid/mcren2.jpg", ratio: "4 / 6" },
   { title: "Fab Five Fennec",   link: "#", src: "images/grid/nwa.jpg", hover: "images/grid/nwa2.jpg", ratio: "1 / 1" },
   { title: "Champ19ns",  link: "#", src: "images/grid/champ19ns.jpg", hover:  "images/grid/champ19ns2.jpg", ratio: "4 / 2.8" },
     { title: "Ice-T",   link: "#", src: "images/grid/icet.jpg", hover: "images/grid/icet2.jpg", ratio: "4 / 6" },
       { title: "Souness",  link: "#", src: "images/grid/souness.jpg", hover: "images/grid/souness2.jpg", ratio: "4 / 6" },
 
 
-      { title: "Alison Becker",  link: "#", src: "images/grid/becker.jpg", hover: "images/grid/becker2.jpg", ratio: "4 / 4" },
+      { title: "Alisson Becker",  link: "#", src: "images/grid/becker.jpg", hover: "images/grid/becker2.jpg", ratio: "4 / 4" },
     { title: "Roberto Baggio", link: "#", src: "images/grid/baggio.jpg", hover: "images/grid/baggio2.jpg", ratio: "4 / 2.8" },
   { title: "Iron Mike",  link: "#", src: "images/grid/tyson.jpg", hover: "images/grid/tyson2.jpg", ratio: "4 / 4" },
   { title: "Firmino",   link: "#", src: "images/grid/bobby.jpg", hover: "images/grid/bobby2.jpg", ratio: "4 / 2.8" },
@@ -131,7 +149,7 @@ const works = [
        { title: "Champions of Europe",  link: "#", src: "images/grid/eurochamps.jpg", hover: "images/grid/eurochamps2.jpg", ratio: "4 / 2.8" },
 
     { title: "Rooney",   link: "#", src: "images/grid/rooney.jpg", hover:"images/grid/rooney2.jpg", ratio: "2 / 3" },
-    { title: "Zlatan Imbrahimovic",   link: "#", src: "images/grid/zlatan.jpg", hover: "images/grid/zlatan2.jpg", ratio: "4 / 5" },
+    { title: "Zlatan Ibrahimović",   link: "#", src: "images/grid/zlatan.jpg", hover: "images/grid/zlatan2.jpg", ratio: "4 / 5" },
         { title: "NWA",  link: "#", src: "images/grid/attitude.jpg", hover: "images/grid/attitude2.jpg", ratio: "4 / 4" },
       { title: "Snoop Dogg",  link: "#", src: "images/grid/snoop1.jpg", hover: "images/grid/snoop2.jpg", ratio: "2 / 2" },
                { title: "Prison break",   link: "#", src: "images/grid/lemmings.jpg", hover:"images/grid/lemmings2.jpg", ratio: "5 / 2.5" },
@@ -161,8 +179,9 @@ function hasLink(l) {
 
 grid.innerHTML = works.map(w => {
   const inner = `
-      <div class="frame" style="--ratio:${esc(w.ratio || "4 / 5")}">
+      <div class="frame" style="--ratio:${esc(w.ratio || "4 / 5")}"${w.animated ? ` data-animated="${esc(w.animated)}"` : ""}>
         <img src="${esc(w.src)}" alt="${esc(w.title)}" loading="lazy" draggable="false">
+        ${w.animated ? '<div class="anim" aria-hidden="true"></div>' : ""}
         <img class="alt" src="${esc(w.hover)}" alt="" loading="lazy" draggable="false">
       </div>
       <h2>${esc(w.title)}</h2>`;
@@ -203,6 +222,92 @@ try {
   const saved = localStorage.getItem("portfolio-layout");
   if (saved === "offgrid" || saved === "mosaic") setLayout(saved);
 } catch (e) {}
+
+/* ---------- Animated pieces (idle animation only, no cursor tracking) ---------- */
+const motionOK = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function makeRig(svg) {
+  const q = s => svg.querySelector(s), qa = s => [...svg.querySelectorAll(s)];
+  const el = {
+    chest: q("#ez-chest"), head: q("#ez-head"), hat: q("#ez-hat"),
+    collars: qa(".ez-collar"), pins: qa(".ez-pin"),
+    feats: ["#ez-nose", "#ez-mouth", "#ez-stache", "#ez-glasses"].map(q)
+  };
+  /* tweak these */
+  const CFG = {
+    headTurn: 3,         // degrees of head tilt while looking around
+    headShift: 22,       // how far the head slides while looking around
+    featureShift: 26,    // extra shift for glasses / nose / mouth
+    hatShift: 16,        // extra shift for the hat
+    breathe: 0.85,       // breathing strength: 0 = off, 1 = noticeable
+    breathPeriod: 4.6,   // seconds per breath
+    look: 0.9            // how far the slow look-around goes (0-1)
+  };
+  const PIV = { x: 1300, y: 2843 };                       // base of the neck
+  const PA = { x: -340, y: 3312 }, PB = { x: 830, y: 2673 }; // shoulder end -> collar end (shine pin)
+  const PL = Math.hypot(PB.x - PA.x, PB.y - PA.y), PE = { x: (PB.x - PA.x) / PL, y: (PB.y - PA.y) / PL };
+  const T = (n, s) => n && n.setAttribute("transform", s);
+  const ease = p => p * p * (3 - 2 * p);
+  let raf = 0, running = false, t0 = performance.now();
+
+  function frame(now) {
+    const t = (now - t0) / 1000;
+    // slow look-around, always on
+    const x = (Math.sin(t * 0.5) + 0.35 * Math.sin(t * 1.3 + 2)) * 0.6 * CFG.look;
+    const y = (Math.sin(t * 0.37 + 1) + 0.3 * Math.sin(t * 0.9)) * 0.3 * CFG.look;
+    // breathing: shoulders, collar, neck and head rise together, head a beat behind
+    const w = (Math.PI * 2) / CFG.breathPeriod, B = CFG.breathe;
+    const chest = ease((Math.sin(t * w) + 1) / 2), headB = ease((Math.sin(t * w - 0.7) + 1) / 2);
+    const sy = 1 + 0.016 * chest * B, sx = 1 + 0.006 * chest * B;
+    T(el.chest, `translate(0 ${-10 * chest * B}) translate(1300 3508) scale(${sx} ${sy}) translate(-1300 -3508)`);
+    // head + neck + collar share one transform, so the collar never separates from the neck
+    const hx = x * CFG.headShift, hy = y * 14 - 8 * headB * B;
+    const rot = x * CFG.headTurn + Math.sin(t * w - 0.7) * 0.3 * B;
+    const headT = `translate(${hx} ${hy}) rotate(${rot} ${PIV.x} ${PIV.y})`;
+    T(el.head, headT);
+    el.collars.forEach(c => T(c, headT));
+    // shoulder shine + left stripe pinned to the collar end, anchored at the far shoulder end
+    const rr = rot * Math.PI / 180, bx = PB.x - PIV.x, by = PB.y - PIV.y;
+    const dX = PIV.x + bx * Math.cos(rr) - by * Math.sin(rr) + hx - PB.x;
+    const dY = PIV.y + bx * Math.sin(rr) + by * Math.cos(rr) + hy - PB.y;
+    const m11 = 1 + dX * PE.x / PL, m21 = dY * PE.x / PL, m12 = dX * PE.y / PL, m22 = 1 + dY * PE.y / PL;
+    const pinT = `matrix(${m11} ${m21} ${m12} ${m22} ${PA.x - (m11 * PA.x + m12 * PA.y)} ${PA.y - (m21 * PA.x + m22 * PA.y)})`;
+    el.pins.forEach(p => T(p, pinT));
+    // face features shift a little further than the head outline
+    el.feats.forEach(f => T(f, `translate(${x * CFG.featureShift} ${y * 20})`));
+    T(el.hat, `translate(${x * CFG.hatShift} ${y * 6 - 3 * headB * B}) rotate(${x * 0.8} 1280 1673)`);
+    if (running) raf = requestAnimationFrame(frame);
+  }
+  return {
+    start() { if (!running) { running = true; raf = requestAnimationFrame(frame); } },
+    stop() { running = false; cancelAnimationFrame(raf); }
+  };
+}
+
+document.querySelectorAll(".frame[data-animated]").forEach(frame => {
+  if (!motionOK) return;                       // reduced motion: keep the still poster
+  const layer = frame.querySelector(".anim");
+  let rig = null, loading = false, visible = false;
+
+  async function load() {
+    loading = true;
+    try {
+      const res = await fetch(frame.dataset.animated);
+      if (!res.ok) throw new Error(res.status);
+      layer.innerHTML = await res.text();
+      rig = makeRig(layer.querySelector("svg"));
+      layer.classList.add("ready");
+      if (visible) rig.start();
+    } catch (e) { /* the still poster stays, nothing breaks */ }
+  }
+
+  // Only fetch when the piece is near the screen, and only animate while it is visible
+  new IntersectionObserver(entries => {
+    visible = entries[0].isIntersecting;
+    if (visible && !rig && !loading) load();
+    if (rig) visible ? rig.start() : rig.stop();
+  }, { rootMargin: "300px" }).observe(frame);
+});
 
 /* Placeholder image generator, used only for the sample entries */
 function ph(color, label) {

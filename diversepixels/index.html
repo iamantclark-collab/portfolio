@@ -237,8 +237,8 @@ function makeRig(svg) {
   const CFG = {
     headTurn: 3,         // degrees of head tilt while looking around
     headShift: 22,       // how far the head slides while looking around
-    featureShift: 20,    // extra shift for glasses / nose / mouth
-    hatShift: 8,         // extra shift for the hat
+    featureShift: 8,     // extra shift for glasses / nose / mouth (bigger = more 3D turn, but gaps can open)
+    hatShift: 0,         // extra shift for the hat (0 = hat stays rigid with the head)
     breathe: 0.85,       // breathing strength: 0 = off, 1 = noticeable (how far the figure rises)
     breathPeriod: 4.6,   // seconds per breath
     look: 0.9            // how far the slow look-around goes (0-1)
@@ -275,7 +275,7 @@ function makeRig(svg) {
     el.pins.forEach(p => T(p, pinT));
     // face features shift a little further than the head outline
     el.feats.forEach(f => T(f, `translate(${x * CFG.featureShift} ${y * 6})`));
-    T(el.hat, `translate(${x * CFG.hatShift} ${y * 2}) rotate(${x * 0.4} 1280 1673)`);
+    T(el.hat, `translate(${x * CFG.hatShift} 0)`);
     if (running) raf = requestAnimationFrame(frame);
   }
   return {

@@ -119,8 +119,8 @@
    The placeholders below (ph) can be deleted.
    ========================================================= */
 const works = [
+    { title: "Judge Dredd",  link: "#", src: "images/grid/dredd.jpg", hover: "images/grid/dredd2.jpg", ratio: "4 / 6" },
     { title: "Ruthless Villain",   link: "#", src: "images/grid/eazy.jpg", animated: "images/animated/eazy.svg", hover: "images/grid/mcren2.jpg", ratio: "4 / 6" },
-  { title: "Judge Dredd",  link: "#", src: "images/grid/dredd.jpg", hover: "images/grid/dredd2.jpg", ratio: "4 / 6" },
   { title: "Fab Five Fennec",   link: "#", src: "images/grid/nwa.jpg", hover: "images/grid/nwa2.jpg", ratio: "1 / 1" },
   { title: "Champ19ns",  link: "#", src: "images/grid/champ19ns.jpg", hover:  "images/grid/champ19ns2.jpg", ratio: "4 / 2.8" },
     { title: "Ice-T",   link: "#", src: "images/grid/icet.jpg", hover: "images/grid/icet2.jpg", ratio: "4 / 6" },
@@ -237,9 +237,9 @@ function makeRig(svg) {
   const CFG = {
     headTurn: 3,         // degrees of head tilt while looking around
     headShift: 22,       // how far the head slides while looking around
-    featureShift: 26,    // extra shift for glasses / nose / mouth
-    hatShift: 16,        // extra shift for the hat
-    breathe: 0.85,       // breathing strength: 0 = off, 1 = noticeable
+    featureShift: 20,    // extra shift for glasses / nose / mouth
+    hatShift: 8,         // extra shift for the hat
+    breathe: 0.85,       // breathing strength: 0 = off, 1 = noticeable (how far the figure rises)
     breathPeriod: 4.6,   // seconds per breath
     look: 0.9            // how far the slow look-around goes (0-1)
   };
@@ -258,10 +258,10 @@ function makeRig(svg) {
     // breathing: shoulders, collar, neck and head rise together, head a beat behind
     const w = (Math.PI * 2) / CFG.breathPeriod, B = CFG.breathe;
     const chest = ease((Math.sin(t * w) + 1) / 2), headB = ease((Math.sin(t * w - 0.7) + 1) / 2);
-    const sy = 1 + 0.016 * chest * B, sx = 1 + 0.006 * chest * B;
-    T(el.chest, `translate(0 ${-10 * chest * B}) translate(1300 3508) scale(${sx} ${sy}) translate(-1300 -3508)`);
+    const sy = 1 + 0.007 * chest * B, sx = 1 + 0.004 * chest * B;
+    T(el.chest, `translate(0 ${-3 * chest * B}) translate(1300 3508) scale(${sx} ${sy}) translate(-1300 -3508)`);
     // head + neck + collar share one transform, so the collar never separates from the neck
-    const hx = x * CFG.headShift, hy = y * 14 - 8 * headB * B;
+    const hx = x * CFG.headShift, hy = y * 8 - 1.5 * headB * B;
     const rot = x * CFG.headTurn + Math.sin(t * w - 0.7) * 0.3 * B;
     const headT = `translate(${hx} ${hy}) rotate(${rot} ${PIV.x} ${PIV.y})`;
     T(el.head, headT);
@@ -274,8 +274,8 @@ function makeRig(svg) {
     const pinT = `matrix(${m11} ${m21} ${m12} ${m22} ${PA.x - (m11 * PA.x + m12 * PA.y)} ${PA.y - (m21 * PA.x + m22 * PA.y)})`;
     el.pins.forEach(p => T(p, pinT));
     // face features shift a little further than the head outline
-    el.feats.forEach(f => T(f, `translate(${x * CFG.featureShift} ${y * 20})`));
-    T(el.hat, `translate(${x * CFG.hatShift} ${y * 6 - 3 * headB * B}) rotate(${x * 0.8} 1280 1673)`);
+    el.feats.forEach(f => T(f, `translate(${x * CFG.featureShift} ${y * 6})`));
+    T(el.hat, `translate(${x * CFG.hatShift} ${y * 2}) rotate(${x * 0.4} 1280 1673)`);
     if (running) raf = requestAnimationFrame(frame);
   }
   return {

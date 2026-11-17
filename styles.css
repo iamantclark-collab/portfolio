@@ -287,6 +287,9 @@ img { display: block; max-width: 100%; }
 
     justify-content: center;
 }
+.promo__media.me {
+    margin-bottom:0;
+}
 
 .promo__image {
   object-fit: cover;

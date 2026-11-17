@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="is-loading">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -61,17 +61,54 @@
   @media (prefers-reduced-motion: reduce) {
     .frame[data-animated] .anim { display: none; }
   }
+
+  /* ---------- Loader overlay ---------- */
+  html.is-loading { overflow: hidden; }
+  .loader {
+    position: fixed; inset: 0; z-index: 9999;
+    display: flex; align-items: center; justify-content: center;
+    background: var(--ink, #F5F87C);                         /* yellow */
+    transition: transform 0.9s cubic-bezier(0.77, 0, 0.18, 1);
+    /* failsafe: if the script never finishes, the overlay still leaves after 20s */
+    animation: loader-failsafe 0.01s linear 20s forwards;
+  }
+  .loader.is-done { transform: translateY(-100%); }          /* swipes off the top */
+  /* the logo is recoloured to solid grey whatever colour the file is (alpha/shape is kept) */
+  .loader-logo {
+    width: clamp(160px, 12vw, 200px);
+    animation: fade 0.5s ease-in-out;
+  }
+  .loader-logo img { display: block; width: 100%; height: auto; filter: url(#loader-grey); }
+  @keyframes loader-blink { 0%, 45% { opacity: 1; } 55%, 90% { opacity: 0.08; } 100% { opacity: 1; } }
+  @keyframes loader-failsafe { to { transform: translateY(-100%); visibility: hidden; } }
+  @media (prefers-reduced-motion: reduce) {
+    .loader { transition: opacity 0.4s ease; animation: none; }
+    .loader.is-done { transform: none; opacity: 0; }
+    .loader-logo { animation: none; }
+  }
 </style>
+<noscript><style>.loader { display: none; } html.is-loading { overflow: auto; }</style></noscript>
 
 </head>
 <body>
 
+<div class="loader" id="loader" role="status" aria-label="Loading">
+  <div class="loader-logo"><img src="images/logo2.svg" alt="DiversePixels"></div>
+  <!-- recolours the logo to solid #596F7D, keeping its shape -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+    <filter id="loader-grey" color-interpolation-filters="sRGB">
+      <feColorMatrix type="matrix" values="0 0 0 0 0.349  0 0 0 0 0.435  0 0 0 0 0.490  0 0 0 1 0"/>
+    </filter>
+  </svg>
+</div>
+
 <header class="site-header"><div class="container nav">
   <a class="brand" href="index.html"><img class="logo" src="images/logo2.svg" alt="DiversePixels"></a>
-  <nav class="nav"> <button class="button" type="button" disabled>Shop: coming soon</button><a class="button secondary"  href="mailto:diversepixels@gmail.com">Contact me</a></nav></div>
-<div class="container">
+  <div class="container">
  
  <h1>From Pencil to Pixel, Digital Art with Personality.</h1>
+<div class="browse-work">
+  <span>Browse my work</span>
 
   <div class="switch" role="group" aria-label="Layout">
     <button type="button" data-layout="offgrid" aria-pressed="true">Editorial view</button>
@@ -84,9 +121,9 @@
 
 <footer class="site-footer">
   <div class="container about">
-    <h2>Thanks for viewing!</h2>
-    <p>Shop coming soon. If you are interested in any of my work please contact me.</p>
-      <a class="button secondary"  href="mailto:diversepixels@gmail.com">Contact me</a>
+    <h2>Seen something you like?</h2>
+    <p>If there's an illustration you've spotted that you'd love to own, get in touch and I'll be happy to discuss what's possible.</p>
+      <a class="button secondary" href="mailto:diversepixels@gmail.com?subject=Print%20enquiry">Enquire about a print</a>
   </div>
     <img src="images/pencil.svg" alt="">
 </footer>
@@ -119,62 +156,108 @@
    The placeholders below (ph) can be deleted.
    ========================================================= */
 const works = [
-    { title: "Judge Dredd",  link: "#", src: "images/grid/dredd.jpg", hover: "images/grid/dredd2.jpg", ratio: "4 / 6" },
-    { title: "Ruthless Villain",   link: "#", src: "images/grid/eazy.jpg", animated: "images/animated/eazy.svg", hover: "images/grid/mcren2.jpg", ratio: "4 / 6" },
+    { title: "Judge Dredd",  link: "#", src: "images/grid/dredd.jpg", hover: "images/grid/dredd2.jpg", ratio: "4 / 6", printSizes: ["A4"]},
+    { title: "Ruthless Villain",   link: "#", src: "images/grid/eazy.jpg", animated: "images/animated/eazy.svg", hover: "images/grid/mcren2.jpg", ratio: "4 / 6", printSizes: ["A4"]},
   { title: "Fab Five Fennec",   link: "#", src: "images/grid/nwa.jpg", hover: "images/grid/nwa2.jpg", ratio: "1 / 1" },
   { title: "Champ19ns",  link: "#", src: "images/grid/champ19ns.jpg", hover:  "images/grid/champ19ns2.jpg", ratio: "4 / 2.8" },
-    { title: "Ice-T",   link: "#", src: "images/grid/icet.jpg", hover: "images/grid/icet2.jpg", ratio: "4 / 6" },
-      { title: "Souness",  link: "#", src: "images/grid/souness.jpg", hover: "images/grid/souness2.jpg", ratio: "4 / 6" },
+    { title: "Ice-T",   link: "#", src: "images/grid/icet.jpg", hover: "images/grid/icet2.jpg", ratio: "4 / 6", printSizes: ["A4"]},
+      { title: "Souness",  link: "#", src: "images/grid/souness.jpg", hover: "images/grid/souness2.jpg", ratio: "4 / 6", printSizes: ["A4"]},
 
 
-      { title: "Alisson Becker",  link: "#", src: "images/grid/becker.jpg", hover: "images/grid/becker2.jpg", ratio: "4 / 4" },
-    { title: "Roberto Baggio", link: "#", src: "images/grid/baggio.jpg", hover: "images/grid/baggio2.jpg", ratio: "4 / 2.8" },
-  { title: "Iron Mike",  link: "#", src: "images/grid/tyson.jpg", hover: "images/grid/tyson2.jpg", ratio: "4 / 4" },
-  { title: "Firmino",   link: "#", src: "images/grid/bobby.jpg", hover: "images/grid/bobby2.jpg", ratio: "4 / 2.8" },
-    { title: "Cantona",  link: "#", src: "images/grid/seagulls.jpg", hover: "images/grid/seagulls2.jpg", ratio: "4 / 4" },
-    { title: "Superman",   link: "#", src: "images/grid/supes.png", hover: "images/grid/supes2.jpg", ratio: "4 / 5" },
-     { title: "Max",  link: "#", src: "images/grid/st.jpg", hover: "images/grid/max2.jpg", ratio: "4 / 4" },
+      { title: "Alisson Becker",  link: "#", src: "images/grid/becker.jpg", hover: "images/grid/becker2.jpg", ratio: "4 / 4", printSizes: ["A4"]},
+    { title: "Roberto Baggio", link: "#", src: "images/grid/baggio.jpg", hover: "images/grid/baggio2.jpg", ratio: "4 / 2.8", printSizes: ["A4"]},
+  { title: "Iron Mike",  link: "#", src: "images/grid/tyson.jpg", hover: "images/grid/tyson2.jpg", ratio: "4 / 4" , printSizes: ["A4"]},
+  { title: "Firmino",   link: "#", src: "images/grid/bobby.jpg", hover: "images/grid/bobby2.jpg", ratio: "4 / 2.8", printSizes: ["A3"]},
+    { title: "Cantona",  link: "#", src: "images/grid/seagulls.jpg", hover: "images/grid/seagulls2.jpg", ratio: "4 / 4", printSizes: ["A4"]},
+    { title: "Superman",   link: "#", src: "images/grid/supes.png", hover: "images/grid/supes2.jpg", ratio: "4 / 5", printSizes: ["A4"]},
+     { title: "Max",  link: "#", src: "images/grid/st.jpg", hover: "images/grid/max2.jpg", ratio: "4 / 4", printSizes: ["A4"]},
          { title: "Kampion", link: "#", src: "images/grid/rush.jpg", hover: "images/grid/rush2.jpg", ratio: "4 / 2.8" },
-          { title: "Arnie",  link: "#", src: "images/grid/arnie.jpg", hover: "images/grid/arnie2.jpg", ratio: "4 / 4" },
-            { title: "Virgil", link: "#", src: "images/grid/virgil.jpg", hover: "images/grid/virgil2.jpg", ratio: "4 / 6" },
-      { title: "Joao Pedro",  link: "#", src: "images/grid/joao.jpg", hover: "images/grid/joao2.jpg", ratio: "4 / 4" },
+          { title: "Arnie",  link: "#", src: "images/grid/arnie.jpg", hover: "images/grid/arnie2.jpg", ratio: "4 / 4", printSizes: ["A4"]},
+            { title: "Virgil", link: "#", src: "images/grid/virgil.jpg", hover: "images/grid/virgil2.jpg", ratio: "4 / 6", printSizes: ["A4"]},
+      { title: "Joao Pedro",  link: "#", src: "images/grid/joao.jpg", hover: "images/grid/joao2.jpg", ratio: "4 / 4"},
 
     { title: "Big L",  link: "#", src: "images/grid/king.jpg", hover: "images/grid/king2.jpg", ratio: "4 / 4" },
-              { title: "Rap Legends",  link: "#", src: "images/grid/rappers.jpg", hover: "images/grid/rappers2.jpg", ratio: "4 / 2.8" },
+              { title: "Rap Legends",  link: "#", src: "images/grid/rappers.jpg", hover: "images/grid/rappers2.jpg", ratio: "4 / 2.8" , printSizes: ["A3"]},
                { title: "Hadouken", link: "#", src: "images/grid/ryu.jpg", hover: "images/grid/ryu2.jpg", ratio: "4 / 6" },
                       { title: "Klopp crest",  link: "#", src: "images/grid/klopp.jpg", hover: "images/grid/klopp2.jpg", ratio: "4 / 4" },
   { title: "Maradona", link: "#", src: "images/grid/diego.jpg", hover: "images/grid/diego2.jpg", ratio: "6 / 6" },
 
 
-       { title: "Champions of Europe",  link: "#", src: "images/grid/eurochamps.jpg", hover: "images/grid/eurochamps2.jpg", ratio: "4 / 2.8" },
+       { title: "Champions of Europe",  link: "#", src: "images/grid/eurochamps.jpg", hover: "images/grid/eurochamps2.jpg", ratio: "4 / 2.8" , printSizes: ["A3"]},
 
-    { title: "Rooney",   link: "#", src: "images/grid/rooney.jpg", hover:"images/grid/rooney2.jpg", ratio: "2 / 3" },
-    { title: "Zlatan Ibrahimović",   link: "#", src: "images/grid/zlatan.jpg", hover: "images/grid/zlatan2.jpg", ratio: "4 / 5" },
+    { title: "Rooney",   link: "#", src: "images/grid/rooney.jpg", hover:"images/grid/rooney2.jpg", ratio: "2 / 3", printSizes: ["A4"]},
+    { title: "Zlatan Ibrahimović",   link: "#", src: "images/grid/zlatan.jpg", hover: "images/grid/zlatan2.jpg", ratio: "4 / 5" , printSizes: ["A4"]},
         { title: "NWA",  link: "#", src: "images/grid/attitude.jpg", hover: "images/grid/attitude2.jpg", ratio: "4 / 4" },
-      { title: "Snoop Dogg",  link: "#", src: "images/grid/snoop1.jpg", hover: "images/grid/snoop2.jpg", ratio: "2 / 2" },
+      { title: "Snoop Dogg",  link: "#", src: "images/grid/snoop1.jpg", hover: "images/grid/snoop2.jpg", ratio: "2 / 2" , printSizes: ["A4"]},
                { title: "Prison break",   link: "#", src: "images/grid/lemmings.jpg", hover:"images/grid/lemmings2.jpg", ratio: "5 / 2.5" },
     { title: "The online Football fan",  link: "#", src: "images/grid/pk.jpg", hover: "images/grid/pk2.jpg", ratio: "4 / 2.8" },
 
-          { title: "McClane",  link: "#", src: "images/grid/willis.jpg", hover: "images/grid/willis2.jpg", ratio: "4 / 4" },
+          { title: "McClane",  link: "#", src: "images/grid/willis.jpg", hover: "images/grid/willis2.jpg", ratio: "4 / 4" , printSizes: ["A4"]},
 
-      { title: "Dustin",   link: "#", src: "images/grid/st2.jpg", hover:"images/grid/st22.jpg", ratio: "4 / 5" },
-        { title: "Steve - Upside down",  link: "#", src: "images/grid/st3.jpg", hover:  "images/grid/st32.jpg", ratio: "4 / 4" },
+      { title: "Dustin",   link: "#", src: "images/grid/st2.jpg", hover:"images/grid/st22.jpg", ratio: "4 / 5" , printSizes: ["A4"]},
+        { title: "Steve - Upside down",  link: "#", src: "images/grid/st3.jpg", hover:  "images/grid/st32.jpg", ratio: "4 / 4" , printSizes: ["A4"]},
                { title: "Do not feed the bears",  link: "#", src: "images/grid/bear.jpg", hover:  "images/grid/bear2.jpg", ratio: "4 / 4" },
                    { title: "Rugby",   link: "#", src: "images/grid/rugby.jpg", hover: "images/grid/rugby2.jpg", ratio: "2.5 / 3.5" },
                           { title: "Hot Rod",   link: "#", src: "images/grid/hotrod.jpg", hover: "images/grid/hotrod2.jpg", ratio: "4 / 4" },
                               
 ];
 
-/* ---------- Rendering (no need to edit below) ---------- */
+
+/* ---------- Rendering ---------- */
 const grid = document.getElementById("grid");
 
 function esc(s) {
-  return String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  return String(s).replace(/[&<>"']/g, c => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;"
+  }[c]));
 }
 
 // A link is only real if it's not empty or "#"
 function hasLink(l) {
   return typeof l === "string" && l.trim() !== "" && l.trim() !== "#";
+}
+
+// Create a targeted email link for each artwork and print size
+function createPrintEnquiryLink(title, size) {
+  const subject = `Print enquiry - ${title} - ${size}`;
+
+  const body = `Hi,
+
+I'm interested in purchasing a ${size} print of "${title}".
+
+Could you please let me know the price and availability?
+
+Many thanks.`;
+
+  return `mailto:diversepixels@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
+
+// Generate the print availability information, if sizes are specified
+function renderPrintEnquiries(w) {
+  if (!Array.isArray(w.printSizes) || w.printSizes.length === 0) {
+    return "";
+  }
+
+  const links = w.printSizes.map(size => {
+    const emailLink = createPrintEnquiryLink(w.title, size);
+
+    return `
+      <span class="print-option">
+        ${esc(size)}
+        <a href="${esc(emailLink)}">Enquire</a>
+      </span>
+    `;
+  }).join('<span class="print-separator"> | </span>');
+
+  return `
+    <p class="print-enquiry">
+      Prints available: ${links}
+    </p>
+  `;
 }
 
 grid.innerHTML = works.map(w => {
@@ -184,12 +267,15 @@ grid.innerHTML = works.map(w => {
         ${w.animated ? '<div class="anim" aria-hidden="true"></div>' : ""}
         <img class="alt" src="${esc(w.hover)}" alt="" loading="lazy" draggable="false">
       </div>
-      <h2>${esc(w.title)}</h2>`;
+      <h2>${esc(w.title)}</h2>
+      ${renderPrintEnquiries(w)}
+  `;
 
   return hasLink(w.link)
     ? `<article class="work"><a href="${esc(w.link)}">${inner}</a></article>`
     : `<article class="work"><div class="no-link">${inner}</div></article>`;
 }).join("");
+
 
 /* ---------- Back to top button ---------- */
 const toTop = document.getElementById("toTop");
@@ -223,90 +309,279 @@ try {
   if (saved === "offgrid" || saved === "mosaic") setLayout(saved);
 } catch (e) {}
 
-/* ---------- Animated pieces (idle animation only, no cursor tracking) ---------- */
-const motionOK = !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---------- Animated pieces ---------- */
+
+const motionOK = !window.matchMedia(
+  "(prefers-reduced-motion: reduce)"
+).matches;
 
 function makeRig(svg) {
-  const q = s => svg.querySelector(s), qa = s => [...svg.querySelectorAll(s)];
+
+  if (!svg) {
+    throw new Error("Could not find SVG element.");
+  }
+
+  const q = s => svg.querySelector(s);
+  const qa = s => [...svg.querySelectorAll(s)];
+
   const el = {
-    chest: q("#ez-chest"), head: q("#ez-head"), hat: q("#ez-hat"),
-    collars: qa(".ez-collar"), pins: qa(".ez-pin"),
+    chest: q("#ez-chest"),
+    head: q("#ez-head"),
+    hat: q("#ez-hat"),
+    collars: qa(".ez-collar"),
+    pins: qa(".ez-pin"),
     feats: ["#ez-nose", "#ez-mouth", "#ez-stache", "#ez-glasses"].map(q)
   };
-  /* tweak these */
+
+  // Check that the main animated SVG elements exist
+  if (!el.chest || !el.head) {
+    console.warn("Animation elements missing: check SVG IDs #ez-chest and #ez-head.");
+  }
+
   const CFG = {
-    headTurn: 5,         // degrees of head tilt while looking around
-    headShift: 22,       // how far the head slides while looking around
-    featureShift: 6,     // extra shift for glasses / nose / mouth (bigger = more 3D turn, but gaps can open)
-    hatShift: 0,         // extra shift for the hat (0 = hat stays rigid with the head)
-    breathe: 0.85,       // breathing strength: 0 = off, 1 = noticeable (how far the figure rises)
-    breathPeriod: 4.6,   // seconds per breath
-    look: 0.9            // how far the slow look-around goes (0-1)
+    headTurn: 5,
+    headShift: 22,
+    featureShift: 6,
+    hatShift: 0,
+    breathe: 0.85,
+    breathPeriod: 4.6,
+    look: 0.9
   };
-  const PIV = { x: 1300, y: 2843 };                       // base of the neck
-  const PA = { x: -340, y: 3312 }, PB = { x: 830, y: 2673 }; // shoulder end -> collar end (shine pin)
-  const PL = Math.hypot(PB.x - PA.x, PB.y - PA.y), PE = { x: (PB.x - PA.x) / PL, y: (PB.y - PA.y) / PL };
-  const T = (n, s) => n && n.setAttribute("transform", s);
+
+  const PIV = { x: 1300, y: 2843 };
+  const PA = { x: -340, y: 3312 };
+  const PB = { x: 830, y: 2673 };
+
+  const PL = Math.hypot(PB.x - PA.x, PB.y - PA.y);
+  const PE = {
+    x: (PB.x - PA.x) / PL,
+    y: (PB.y - PA.y) / PL
+  };
+
+  const T = (n, s) => {
+    if (n) n.setAttribute("transform", s);
+  };
+
   const ease = p => p * p * (3 - 2 * p);
-  let raf = 0, running = false, t0 = performance.now();
+
+  let raf = 0;
+  let running = false;
+  let t0 = performance.now();
 
   function frame(now) {
+
     const t = (now - t0) / 1000;
-    // slow look-around, always on
-    const x = (Math.sin(t * 0.5) + 0.35 * Math.sin(t * 1.3 + 2)) * 0.6 * CFG.look;
-    const y = (Math.sin(t * 0.37 + 1) + 0.3 * Math.sin(t * 0.9)) * 0.3 * CFG.look;
-    // breathing: shoulders, collar, neck and head rise together, head a beat behind
-    const w = (Math.PI * 2) / CFG.breathPeriod, B = CFG.breathe;
-    const chest = ease((Math.sin(t * w) + 1) / 2), headB = ease((Math.sin(t * w - 0.7) + 1) / 2);
-    const sy = 1 + 0.007 * chest * B, sx = 1 + 0.004 * chest * B;
-    T(el.chest, `translate(0 ${-3 * chest * B}) translate(1300 3508) scale(${sx} ${sy}) translate(-1300 -3508)`);
-    // head + neck + collar share one transform, so the collar never separates from the neck
-    const hx = x * CFG.headShift, hy = y * 8 - 1.5 * headB * B;
-    const rot = x * CFG.headTurn + Math.sin(t * w - 0.7) * 0.3 * B;
-    const headT = `translate(${hx} ${hy}) rotate(${rot} ${PIV.x} ${PIV.y})`;
+
+    const x = (
+      Math.sin(t * 0.5) +
+      0.35 * Math.sin(t * 1.3 + 2)
+    ) * 0.6 * CFG.look;
+
+    const y = (
+      Math.sin(t * 0.37 + 1) +
+      0.3 * Math.sin(t * 0.9)
+    ) * 0.3 * CFG.look;
+
+    const w = (Math.PI * 2) / CFG.breathPeriod;
+    const B = CFG.breathe;
+
+    const chest = ease((Math.sin(t * w) + 1) / 2);
+    const headB = ease((Math.sin(t * w - 0.7) + 1) / 2);
+
+    const sy = 1 + 0.007 * chest * B;
+    const sx = 1 + 0.004 * chest * B;
+
+    T(
+      el.chest,
+      `translate(0 ${-3 * chest * B})
+       translate(1300 3508)
+       scale(${sx} ${sy})
+       translate(-1300 -3508)`
+    );
+
+    const hx = x * CFG.headShift;
+    const hy = y * 8 - 1.5 * headB * B;
+
+    const rot =
+      x * CFG.headTurn +
+      Math.sin(t * w - 0.7) * 0.3 * B;
+
+    const headT =
+      `translate(${hx} ${hy})
+       rotate(${rot} ${PIV.x} ${PIV.y})`;
+
     T(el.head, headT);
+
     el.collars.forEach(c => T(c, headT));
-    // shoulder shine + left stripe pinned to the collar end, anchored at the far shoulder end
-    const rr = rot * Math.PI / 180, bx = PB.x - PIV.x, by = PB.y - PIV.y;
-    const dX = PIV.x + bx * Math.cos(rr) - by * Math.sin(rr) + hx - PB.x;
-    const dY = PIV.y + bx * Math.sin(rr) + by * Math.cos(rr) + hy - PB.y;
-    const m11 = 1 + dX * PE.x / PL, m21 = dY * PE.x / PL, m12 = dX * PE.y / PL, m22 = 1 + dY * PE.y / PL;
-    const pinT = `matrix(${m11} ${m21} ${m12} ${m22} ${PA.x - (m11 * PA.x + m12 * PA.y)} ${PA.y - (m21 * PA.x + m22 * PA.y)})`;
+
+    const rr = rot * Math.PI / 180;
+    const bx = PB.x - PIV.x;
+    const by = PB.y - PIV.y;
+
+    const dX =
+      PIV.x +
+      bx * Math.cos(rr) -
+      by * Math.sin(rr) +
+      hx - PB.x;
+
+    const dY =
+      PIV.y +
+      bx * Math.sin(rr) +
+      by * Math.cos(rr) +
+      hy - PB.y;
+
+    const m11 = 1 + dX * PE.x / PL;
+    const m21 = dY * PE.x / PL;
+    const m12 = dX * PE.y / PL;
+    const m22 = 1 + dY * PE.y / PL;
+
+    const pinT =
+      `matrix(${m11} ${m21} ${m12} ${m22}
+      ${PA.x - (m11 * PA.x + m12 * PA.y)}
+      ${PA.y - (m21 * PA.x + m22 * PA.y)})`;
+
     el.pins.forEach(p => T(p, pinT));
-    // face features shift a little further than the head outline
-    el.feats.forEach(f => T(f, `translate(${x * CFG.featureShift} ${y * 6})`));
+
+    el.feats.forEach(f => {
+      if (f) {
+        T(f, `translate(${x * CFG.featureShift} ${y * 6})`);
+      }
+    });
+
     T(el.hat, `translate(${x * CFG.hatShift} 0)`);
-    if (running) raf = requestAnimationFrame(frame);
+
+    if (running) {
+      raf = requestAnimationFrame(frame);
+    }
   }
+
   return {
-    start() { if (!running) { running = true; raf = requestAnimationFrame(frame); } },
-    stop() { running = false; cancelAnimationFrame(raf); }
+
+    start() {
+      if (!running) {
+        running = true;
+        t0 = performance.now();
+        raf = requestAnimationFrame(frame);
+      }
+    },
+
+    stop() {
+      running = false;
+      cancelAnimationFrame(raf);
+    }
+
   };
 }
 
-document.querySelectorAll(".frame[data-animated]").forEach(frame => {
-  if (!motionOK) return;                       // reduced motion: keep the still poster
-  const layer = frame.querySelector(".anim");
-  let rig = null, loading = false, visible = false;
 
-  async function load() {
-    loading = true;
-    try {
-      const res = await fetch(frame.dataset.animated);
-      if (!res.ok) throw new Error(res.status);
-      layer.innerHTML = await res.text();
-      rig = makeRig(layer.querySelector("svg"));
-      layer.classList.add("ready");
-      if (visible) rig.start();
-    } catch (e) { /* the still poster stays, nothing breaks */ }
+/* Find all illustrations that have animated SVGs */
+
+document.querySelectorAll(".frame[data-animated]").forEach(frame => {
+
+  const layer = frame.querySelector(".anim");
+
+  if (!layer) {
+    console.error("Animation layer missing:", frame);
+    return;
   }
 
-  // Only fetch when the piece is near the screen, and only animate while it is visible
-  new IntersectionObserver(entries => {
-    visible = entries[0].isIntersecting;
-    if (visible && !rig && !loading) load();
-    if (rig) visible ? rig.start() : rig.stop();
-  }, { rootMargin: "300px" }).observe(frame);
+  if (!motionOK) return;
+
+  let rig = null;
+  let loading = false;
+  let visible = false;
+
+  async function load() {
+
+    if (loading || rig) return;
+
+    loading = true;
+
+    try {
+
+      const svgPath = frame.dataset.animated;
+
+      const response = await fetch(svgPath, {
+        cache: "no-cache"
+      });
+
+      if (!response.ok) {
+        throw new Error(
+          `SVG failed to load: ${response.status} ${response.statusText}`
+        );
+      }
+
+      const svgText = await response.text();
+
+      // Insert the SVG into the animation layer
+      layer.innerHTML = svgText;
+
+      const svg = layer.querySelector("svg");
+
+      if (!svg) {
+        throw new Error("The loaded file does not contain an SVG element.");
+      }
+
+      // Make the SVG scale correctly inside the image frame
+      svg.setAttribute("width", "100%");
+      svg.setAttribute("height", "100%");
+
+      rig = makeRig(svg);
+
+      layer.classList.add("ready");
+
+      if (visible) {
+        rig.start();
+      }
+
+    } catch (error) {
+
+      console.error(
+        "Could not initialise animated illustration:",
+        frame.dataset.animated,
+        error
+      );
+
+    } finally {
+
+      loading = false;
+
+    }
+
+  }
+
+
+  // Load only when the illustration approaches the viewport
+
+  if ("IntersectionObserver" in window) {
+
+    const observer = new IntersectionObserver(entries => {
+
+      visible = entries[0].isIntersecting;
+
+      if (visible && !rig) {
+        load();
+      }
+
+      if (rig) {
+        visible ? rig.start() : rig.stop();
+      }
+
+    }, {
+      rootMargin: "300px"
+    });
+
+    observer.observe(frame);
+
+  } else {
+
+    // Fallback for browsers without IntersectionObserver
+    visible = true;
+    load();
+
+  }
+
 });
 
 /* Placeholder image generator, used only for the sample entries */
@@ -314,6 +589,52 @@ function ph(color, label) {
   const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500"><rect width="400" height="500" fill="${color}"/><text x="200" y="260" font-family="sans-serif" font-size="64" text-anchor="middle" fill="rgba(0,0,0,.35)">${label}</text></svg>`;
   return "data:image/svg+xml;utf8," + encodeURIComponent(svg);
 }
+</script>
+
+<script>
+/* ---------- Loader overlay: waits for fonts + images, then swipes off the top ---------- */
+(() => {
+  const loader = document.getElementById("loader");
+  if (!loader) return;
+
+  const MIN_SHOW = 1200;             // ms: the blinking logo is always on screen at least this long
+  const MAX_WAIT = 15000;            // ms: never hold the page longer than this, whatever happens
+  const WAIT_FOR_ALL_IMAGES = true;  // false = only wait for images near the top of the page
+
+  // 1) every image, including the lazy ones and the hover versions
+  let imgs = [...document.images].filter(img => !loader.contains(img));
+  if (WAIT_FOR_ALL_IMAGES) imgs.forEach(img => { img.loading = "eager"; });
+  else imgs = imgs.filter(img => img.getBoundingClientRect().top < innerHeight * 1.5);
+  const settle = img => new Promise(done => {
+    if (img.complete) return done();                       // already loaded (or failed)
+    img.addEventListener("load", done, { once: true });
+    img.addEventListener("error", done, { once: true });   // a missing image never blocks the page
+  });
+
+  // 2) the page itself (stylesheets, scripts) and both Gilroy weights
+  const pageLoaded = document.readyState === "complete"
+    ? Promise.resolve()
+    : new Promise(done => addEventListener("load", done, { once: true }));
+  const fontsReady = document.fonts
+    ? Promise.all([document.fonts.load("300 1em Gilroy"), document.fonts.load("800 1em Gilroy")])
+        .catch(() => {}).then(() => document.fonts.ready)
+    : Promise.resolve();
+
+  let revealed = false;
+  function reveal() {
+    if (revealed) return;
+    revealed = true;
+    document.documentElement.classList.remove("is-loading");   // scrolling comes back
+    loader.classList.add("is-done");                           // swipe up
+    loader.addEventListener("transitionend", e => { if (e.target === loader) loader.remove(); });
+    setTimeout(() => loader.remove(), 1500);                   // backup removal
+  }
+
+  Promise.race([
+    Promise.all([pageLoaded, fontsReady, ...imgs.map(settle)]),
+    new Promise(done => setTimeout(done, MAX_WAIT))
+  ]).then(() => setTimeout(reveal, Math.max(0, MIN_SHOW - performance.now())));
+})();
 </script>
 </body>
 </html>

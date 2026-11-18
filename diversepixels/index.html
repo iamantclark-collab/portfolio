@@ -247,7 +247,7 @@ function renderPrintEnquiries(w) {
 
     return `
       <span class="print-option">
-        ${esc(size)}
+        ${esc(size)} prints available.
         <a href="${esc(emailLink)}">Enquire</a>
       </span>
     `;
@@ -255,7 +255,7 @@ function renderPrintEnquiries(w) {
 
   return `
     <p class="print-enquiry">
-      Prints available: ${links}
+      ${links}
     </p>
   `;
 }

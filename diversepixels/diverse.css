@@ -315,6 +315,37 @@ header h1 {
     z-index: 2;
 }
 
+/* Print availability and enquiry links */
+.print-enquiry {
+  font-size: 1.1rem;
+  line-height: 1.5;
+    margin: 0 0 18px;
+    display: flex;
+    flex-direction: row;
+}
+
+.print-option {
+  white-space: nowrap;
+  display: flex;
+    flex-direction: row;
+    line-height: 1.3;
+}
+
+.print-enquiry a {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  margin-left: 3px;
+      font-weight: 800;
+}
+
+.print-enquiry a:hover {
+  opacity: 0.65;
+}
+
+.print-separator {
+  margin: 0 5px;
+}
+
 /* Second version appears on hover or keyboard focus (devices that can hover) */
 @media (hover: hover) {
     .work a:hover .alt,
@@ -322,9 +353,10 @@ header h1 {
 }
 
 .work h2 {
-    margin: 12px 0 0;
-    font-size: 1rem;
+    margin: 12px 0 2px 0;
+    font-size: 1.2rem;
     font-weight: 800;
+        line-height: 1.1;
 }
 .work a:hover h2 { text-decoration: underline; text-underline-offset: 3px; }
 .work a:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
@@ -363,34 +395,18 @@ header h1 {
     width:200px;
     margin-bottom: -24px;
 }
-}
-
-
-/* Print availability and enquiry links */
 .print-enquiry {
-  font-size: 0.9rem;
-  line-height: 1.5;
+  font-size: 1rem;
+  line-height: 1.2;
     margin: 0 0 18px;
-    display: flex;
-    flex-direction: row;
-}
 
+}
 .print-option {
   white-space: nowrap;
   display: flex;
+    flex-direction: column;
+    line-height: 1.3;
+}
 }
 
-.print-enquiry a {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  margin-left: 3px;
-      font-weight: 800;
-}
 
-.print-enquiry a:hover {
-  opacity: 0.65;
-}
-
-.print-separator {
-  margin: 0 5px;
-}
